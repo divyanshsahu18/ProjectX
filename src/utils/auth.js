@@ -1,10 +1,11 @@
 // src/utils/auth.js
 
+import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-export const ApiBaseUrl = ' https://z16gkj2csh.execute-api.eu-west-2.amazonaws.com'
+export const ApiBaseUrl = 'https://tn24noegva.execute-api.eu-west-2.amazonaws.com'
 
 export const useLogout = () => {
   const navigate = useNavigate();
@@ -27,20 +28,38 @@ export const useLogout = () => {
 
 export const useAuth = () => {
 
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(
+    () => localStorage.getItem('user') ? localStorage.getItem('user') : null
+  );
 
-  useEffect(() => {
-    const token = localStorage.getItem('idToken');
-    const decode = token && jwtDecode(token);
-    setUser(() => ({
-      given_name: decode.given_name,
-      email: decode.email,
-      preferable_activity: decode['custom:preferable_activity'],
-      target: decode['custom:target']
-    }))
+  const fetchProfile = useCallback(async () => {
+    try {
+      const token = getToken();
+      const response = await axios.get(`${ApiBaseUrl}/api/profile`, { headers: { Authorization: `Bearer ${token}` } })
+
+      const profile = JSON.parse(response?.data?.message)
+      localStorage.setItem('user', response?.data?.message)
+
+      setUser(() => ({
+        given_name: profile['given_name'],
+        email: profile['email'],
+        preferable_activity: profile['custom:preferable_activity'],
+        target: profile['custom:target']
+      }))
+
+    } catch (error) {
+      console.log(error.response ? error.response.data : error.message);
+    }
+
   }, [])
 
-  return { user };
+  useEffect(() => {
+    if (!user) {
+      fetchProfile()
+    }
+  }, [fetchProfile, user])
+
+  return { user, refetchProfile: fetchProfile };
 }
 
 export const getToken = () => {

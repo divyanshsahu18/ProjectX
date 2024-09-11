@@ -37,7 +37,7 @@ export default function Login() {
   useEffect(() => {
     const idToken = localStorage.getItem('idToken');
     if (idToken) {
-      navigateTo('/');
+      navigateTo('/dashboard');
     }
   }, [navigateTo]);
   
@@ -55,7 +55,7 @@ export default function Login() {
       
         // Delay navigation to give time for toast to show
         setTimeout(() => {
-          navigateTo('/');
+          navigateTo('/dashboard');
         }, 2000); // 2 seconds delay
       } else {
         toast.error('Login failed: ' + (message || 'Unknown error'));
