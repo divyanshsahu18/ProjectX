@@ -124,7 +124,7 @@ export default function Header() {
           >
             <Box sx={{ px: 3, py: 2 }}>
               <Box sx={{ textAlign: 'center' }}>
-                <div>{user?.given_name || 'user'}</div>
+                <div>{user?.fullName || 'user'}</div>
                 <small>{user?.email || 'johnsondoe@nomail.com'}</small>
               </Box>
               <hr />

@@ -3,7 +3,7 @@ import { jwtDecode } from 'jwt-decode';
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-export const ApiBaseUrl = '  https://ut2xqgyy11.execute-api.eu-west-2.amazonaws.com'
+export const ApiBaseUrl = 'https://f1ejdv5ij2.execute-api.eu-west-2.amazonaws.com'
 
 export const useLogout = () => {
   const navigate = useNavigate();
@@ -27,22 +27,24 @@ export const useLogout = () => {
 export const useAuth = () => {
 
   const [user, setUser] = useState(
-    () => localStorage.getItem('user') ? localStorage.getItem('user') : null
+    () => localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null
   );
 
   const fetchProfile = useCallback(async () => {
     try {
+      localStorage.removeItem('user');  
       const token = getToken();
       const response = await axios.get(`${ApiBaseUrl}/api/profile`, { headers: { Authorization: `Bearer ${token}` } })
 
-      const profile = JSON.parse(response?.data?.message)
-      localStorage.setItem('user', response?.data?.message)
+      const profile = response?.data
+      console.log(profile);
+      localStorage.setItem('user', JSON.stringify(response?.data))
 
       setUser(() => ({
-        given_name: profile['given_name'],
+        fullName: profile['fullName'],
         email: profile['email'],
-        preferable_activity: profile['custom:preferable_activity'],
-        target: profile['custom:target']
+        preferableActivity: profile['preferableActivity'],
+        target: profile['target']
       }))
 
     } catch (error) {

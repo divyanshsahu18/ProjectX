@@ -3,6 +3,7 @@ import Render from './Render';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';  // Import useNavigate
 import { Person } from '@mui/icons-material';
+import { ApiBaseUrl } from '../utils/auth';
 
 const CoachesPage = () => {
   const [coaches, setCoaches] = useState([]);
@@ -18,7 +19,7 @@ const CoachesPage = () => {
           throw new Error('Token is missing');
         }
 
-        const res = await axios.get("https://4yo59jcpx0.execute-api.eu-west-2.amazonaws.com/api/coaches", {
+        const res = await axios.get(`${ApiBaseUrl}/api/coaches`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }

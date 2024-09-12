@@ -78,15 +78,6 @@ export default function Login() {
 
   return (
     <Container maxWidth='lg'>
-       <ToastContainer 
-        position="bottom-center"
-        autoClose={3000} // Toast will disappear after 3 seconds
-        newestOnTop
-        closeOnClick
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
       <Grid container padding={2}>
         <Grid item xs={12} sm={6}>
           <Stack
