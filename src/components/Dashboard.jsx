@@ -17,6 +17,7 @@ import FeedbackModal from "./FeedbackModal";
 import { ApiBaseUrl, useAuth } from "../utils/auth";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const SubHeader = styled(Box)(({ theme }) => ({
   background: "linear-gradient(331.61deg, #628D12 -99.16%, #8ED902 142.87%)",
@@ -39,7 +40,7 @@ const ButtonContainer = styled("div")(() => ({
 }));
 
 const CancelButton = styled(Button)(() => ({
-  width: "140px",
+  // width: "140px",
   height: "40px",
   padding: "8px",
   borderRadius: "8px",
@@ -60,7 +61,7 @@ const CancelButton = styled(Button)(() => ({
 }));
 
 const FinishButton = styled(Button)(() => ({
-  width: "140px",
+  // width: "140px",
   height: "40px",
   padding: "8px",
   borderRadius: "8px",
@@ -78,7 +79,6 @@ const FinishButton = styled(Button)(() => ({
     background: "#8ED900",
   },
 }));
-
 
 const Dashboard = () => {
   const theme = useTheme();
@@ -99,6 +99,7 @@ const Dashboard = () => {
   const handleFinishClick = (workout) => {
     setSelectedWorkout(workout);
     setFeedbackModalOpen(true);
+    finishWorkout(workout);
   };
 
   const handleCloseCancelModal = () => {
@@ -113,34 +114,87 @@ const Dashboard = () => {
 
   const handleCancelWorkout = () => {
     console.log("Canceling workout:", selectedWorkout);
+    cancelWorkout(selectedWorkout);
     handleCloseCancelModal();
   };
 
-  useEffect(() => {
-    const fetchWorkouts = async () => {
-      try {
-        setWorkoutsLoading(true);
-        const token = localStorage.getItem("idToken");
-        if (!token) {
-          throw new Error("Token is missing");
-        }
+  const finishWorkout = async (workout) => {
+    try {
+      const token = localStorage.getItem("idToken");
+      if (!token) {
+        throw new Error("Token is missing");
+      }
 
-        const res = await axios.get(`${ApiBaseUrl}/api/workouts`, {
+      const res = await axios.put(
+        `${ApiBaseUrl}/api/finishWorkout`,
+        { id: workout?.id },
+        {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        });
-        setWorkouts(res?.data?.data?.workouts);
-      } catch (error) {
-        console.error(
-          "Error fetching workouts:",
-          error.response ? error.response.data : error.message
-        );
-      } finally {
-        setWorkoutsLoading(false);
+        }
+      );
+      fetchWorkouts();
+      toast.success("Workout finished successfully");
+      console.log(res);
+    } catch (error) {
+      console.error(
+        "Error while finishing the workout:",
+        error.response ? error.response.data : error.message
+      );
+    }
+  };
+  const cancelWorkout = async (workout) => {
+    try {
+      const token = localStorage.getItem("idToken");
+      if (!token) {
+        throw new Error("Token is missing");
       }
-    };
 
+      const res = await axios.post(
+        `${ApiBaseUrl}/api/cancelsession`,
+        { id: workout?.id },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      fetchWorkouts();
+      toast.error("Workout cancelled successfully");
+      console.log(res);
+    } catch (error) {
+      console.error(
+        "Error while canceling the workout:",
+        error.response ? error.response.data : error.message
+      );
+    }
+  };
+  const fetchWorkouts = async () => {
+    try {
+      setWorkoutsLoading(true);
+      const token = localStorage.getItem("idToken");
+      if (!token) {
+        throw new Error("Token is missing");
+      }
+
+      const res = await axios.get(`${ApiBaseUrl}/api/workouts`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setWorkouts(res?.data?.data?.workouts);
+    } catch (error) {
+      console.error(
+        "Error fetching workouts:",
+        error.response ? error.response.data : error.message
+      );
+    } finally {
+      setWorkoutsLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchWorkouts();
   }, []);
 
@@ -152,7 +206,7 @@ const Dashboard = () => {
     <Box>
       <SubHeader>
         <Typography variant={isMobile ? "h5" : "h4"}>
-          Hello, {user?.given_name || "User"}!
+          Hello, {user?.fullName || "User"}!
         </Typography>
       </SubHeader>
       <Box sx={{ p: 3 }}>
@@ -201,12 +255,16 @@ const Dashboard = () => {
                         {workout?.workoutType}
                       </Typography>
                       <Chip
-                        label={workout?.status}
+                        label={
+                          workout?.status !== "completed"
+                            ? workout?.status
+                            : "Finished"
+                        }
                         color={
                           workout?.status === "Scheduled"
+                            ? "info"
+                            : workout?.status === "completed"
                             ? "primary"
-                            : workout?.status === "Finished"
-                            ? "success"
                             : workout?.status === "Cancelled"
                             ? "error"
                             : "default"
@@ -231,45 +289,45 @@ const Dashboard = () => {
                       </Box>
                     )}
                   </CardContent>
-                   
-                    <Box p={2} pt={0}>
-                      {workout?.status === "Scheduled" && (
-                        <ButtonContainer>
-                          <CancelButton
-                            onClick={() => handleCancelClick(workout)}
-                          >
-                            Cancel Workout
-                          </CancelButton>
-                          <FinishButton
-                            onClick={() => handleFinishClick(workout)}
-                          >
-                            Finish Workout
-                          </FinishButton>
-                        </ButtonContainer>
-                      )}
-                      {workout?.status !== "Scheduled" && (
+
+                  <Box p={2} pt={0}>
+                    {workout?.status === "Scheduled" && (
+                      <ButtonContainer>
+                        <CancelButton
+                          onClick={() => handleCancelClick(workout)}
+                        >
+                          Cancel Workout
+                        </CancelButton>
+                        <FinishButton
+                          onClick={() => handleFinishClick(workout)}
+                        >
+                          Finish Workout
+                        </FinishButton>
+                      </ButtonContainer>
+                    )}
+                    {workout?.status !== "Scheduled" && (
+                      <ButtonContainer>
                         <Button
-                        variant="outlined"
-                        color="inherit"
-                        sx={{
-                          height: "40px",
-                          fontFamily: "Lexend", // setting font-family
-                          fontSize: "14px", // setting font-size
-                          fontWeight: 400, // setting font-weight
-                          lineHeight: "24px", // setting line-height
-                          textAlign: "center", // centering the text
-                          display: "flex", // enables flexbox for centering
-                          alignItems: "center", // vertically centers the text
-                          justifyContent: "center", // horizontally centers the text
-                        }}
-                        onClick={() => handleFinishClick(workout)}
-                      >
-                        Leave Feedback
-                      </Button>
-                      
-                      )}
-                    </Box>
-                  
+                          variant='outlined'
+                          color='inherit'
+                          sx={{
+                            height: "40px",
+                            fontFamily: "Lexend", // setting font-family
+                            fontSize: "14px", // setting font-size
+                            fontWeight: 400, // setting font-weight
+                            lineHeight: "24px", // setting line-height
+                            textAlign: "center", // centering the text
+                            display: "flex", // enables flexbox for centering
+                            alignItems: "center", // vertically centers the text
+                            justifyContent: "center", // horizontally centers the text
+                          }}
+                          onClick={() => handleFinishClick(workout)}
+                        >
+                          Leave Feedback
+                        </Button>
+                      </ButtonContainer>
+                    )}
+                  </Box>
                 </WorkoutCard>
               </Grid>
             ))

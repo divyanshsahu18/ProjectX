@@ -17,6 +17,7 @@ import axios from 'axios';
 import gymImg from '../assets/Image.jpg';
 import { z } from 'zod';
 import { Link } from 'react-router-dom';
+import { ApiBaseUrl } from '../utils/auth';
 
 const validationSchema = z.object({
   name: z
@@ -90,7 +91,7 @@ function SignUpForm() {
     }
 
     const apiRegister =
-      ' https://z0s3hb8uwi.execute-api.eu-west-2.amazonaws.com/api/signup';
+      `${ApiBaseUrl}/api/signup`;
 
     const userData = {
       fullName: name,
