@@ -17,8 +17,6 @@ import axios from 'axios';
 import gymImg from '../assets/Image.jpg';
 import { z } from 'zod';
 import { Link } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css'
 
 const validationSchema = z.object({
   name: z
@@ -92,7 +90,7 @@ function SignUpForm() {
     }
 
     const apiRegister =
-      'https://z16gkj2csh.execute-api.eu-west-2.amazonaws.com/api/signup';
+      ' https://z0s3hb8uwi.execute-api.eu-west-2.amazonaws.com/api/signup';
 
     const userData = {
       fullName: name,
@@ -104,25 +102,14 @@ function SignUpForm() {
 
     try {
       const response = await axios.post(apiRegister, userData);
-      toast.success('User created successfully!');
+      alert('User created successfully! Check the console for API response.');
     } catch (error) {
-      let errorMessage = error.response?.data?.message || 'Failed to create user. Unknown error occurred.';
-      errorMessage = errorMessage.split('(')[0].trim(); // "Sign-up failed: User account already exists"
-      toast.error(errorMessage);
+      alert('Failed to create user. Check the console for details.');
     }
   };
 
   return (
     <Container maxWidth='lg'>
-      <ToastContainer 
-        position="bottom-center"
-        autoClose={3000} // Toast will disappear after 3 seconds
-        newestOnTop
-        closeOnClick
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
       <Grid container padding={2}>
         {/* Left Side - Form */}
         <Grid item xs={12} md={6}>

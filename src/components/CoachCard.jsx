@@ -1,10 +1,46 @@
-import React from 'react';
-import { Card, CardContent, CardMedia, Typography, Button, Box } from '@mui/material';
-// import StarIcon from '@mui/icons-material/Star'; 
+// import React from 'react';
+// import { Card, CardContent, CardMedia, Typography, Button, Box } from '@mui/material';
+// import Rating from '@mui/material/Rating';
+// import Stack from '@mui/material/Stack';
+
+import * as React from 'react';
+import { useEffect, useState } from 'react';
+import Card from '@mui/material/Card';
+import { Box, Skeleton } from '@mui/material';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 import Rating from '@mui/material/Rating';
 import Stack from '@mui/material/Stack';
+import { useNavigate } from 'react-router-dom';
 
-function CoachCard({ person }) {
+
+function CoachCard({ person}) {
+  const navigate = useNavigate();
+
+
+//   const oBookWorkout = () => {
+//     navigate(`/coach/${person.name}`, { state: { person } });
+//   };
+
+  // const handleBookWorkout = () => {
+  //   // Redirect to the coach's profile page with the coachId
+  //   console.log('something');
+    
+  //   navigate(`/coach/${person.name}` , { state: { person } });
+  // };
+
+  const handleBookWorkout = () => {
+    // Redirect to the coach's profile page with the coachId
+    console.log('something');
+    console.log('coaches: ', person);
+    
+    navigate(`/coach/${person.name}`, {state: {person}});
+  };
+
+
   return (
     <Card
       sx={{
@@ -18,6 +54,14 @@ function CoachCard({ person }) {
         justifyContent: 'space-between',
       }}
     >
+
+{/* {loading ? (
+        <Box>
+          {/* Skeleton for the image */}
+
+
+
+      
       <CardMedia
         component="img"
         height="200"
@@ -31,19 +75,18 @@ function CoachCard({ person }) {
             {person.name}
           </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-           
             <Typography variant="body2" color="#4B5563">
               {person.rating}
             </Typography>
-            {/* <StarIcon sx={{ color: '#FFD700', fontSize: '20px', marginRight: '4px' }} />   */}
             <Stack spacing={1}>
-            <Rating
-              name="overall-rating"
-              value={Number(person.rating)/10}
-              max={1} // no.of stars
-              precision={0.5} //
-              readOnly />
-          </Stack>
+              <Rating
+                name="overall-rating"
+                value={Number(person.rating)/10}
+                max={1} // no. of stars
+                precision={0.5}
+                readOnly
+              />
+            </Stack>
           </Box>
         </Box>
         <Typography variant="body2" color="#4B5563" fontSize='12px' fontWeight='300' lineHeight='12px' sx={{ mt: 1 }}>
@@ -68,10 +111,12 @@ function CoachCard({ person }) {
             textAlign:'center'
           }}
           variant="contained"
+          onClick={handleBookWorkout}  // Pass the coach email on click
         >
           Book Workout
         </Button>
       </Box>
+      
     </Card>
   );
 }

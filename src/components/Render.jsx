@@ -2,7 +2,7 @@ import React from 'react';
 import CoachCard from './CoachCard';
 import { Box } from '@mui/material';
 
-function Render({ list }) {
+function Render({ list, onBookWorkout }) {
   return (
     <Box
       sx={{
@@ -17,7 +17,7 @@ function Render({ list }) {
       }}
     >
       {list.map((person, index) => (
-        <CoachCard key={index} person={person} />
+        <CoachCard key={index} person={person}/>
       ))}
     </Box>
   );

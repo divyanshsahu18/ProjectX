@@ -1,4 +1,4 @@
-import React from 'react';
+
 import {
   Dialog,
   DialogTitle,
@@ -12,16 +12,16 @@ import {
 import { styled } from '@mui/system';
 import CloseIcon from '@mui/icons-material/Close';
 
-const StyledDialog = styled(Dialog)(({ theme }) => ({
+const StyledDialog = styled(Dialog)(() => ({
   '& .MuiDialog-paper': {
     width: '552px',
-    borderRadius: '16px 0px 0px 0px',
+    borderRadius: '16px 16px 16px 16px',
     border: '1px solid #D1D5DB',
     boxShadow: '0px 0px 11px 0px #0000001F',
   },
 }));
 
-const StyledDialogTitle = styled(DialogTitle)(({ theme }) => ({
+const StyledDialogTitle = styled(DialogTitle)(() => ({
   fontFamily: 'Lexend',
   fontSize: '18px',
   fontWeight: 500,
@@ -34,11 +34,11 @@ const StyledDialogTitle = styled(DialogTitle)(({ theme }) => ({
   alignItems: 'center',
 }));
 
-const StyledDialogContent = styled(DialogContent)(({ theme }) => ({
+const StyledDialogContent = styled(DialogContent)(() => ({
   padding: '24px',
 }));
 
-const StyledTypography = styled(Typography)(({ theme }) => ({
+const StyledTypography = styled(Typography)(() => ({
   fontFamily: 'Lexend',
   fontSize: '14px',
   fontWeight: 300,
@@ -47,12 +47,12 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
   color: '#323A3A',
 }));
 
-const StyledDialogActions = styled(DialogActions)(({ theme }) => ({
+const StyledDialogActions = styled(DialogActions)(() => ({
   padding: '24px',
   justifyContent: 'center',
 }));
 
-const ResumeButton = styled(Button)(({ theme }) => ({
+const ResumeButton = styled(Button)(() => ({
   padding: '8px 16px',
   borderRadius: '8px',
   border: '1px solid #323A3A',
@@ -62,7 +62,7 @@ const ResumeButton = styled(Button)(({ theme }) => ({
   textTransform: 'none',
 }));
 
-const CancelButton = styled(Button)(({ theme }) => ({
+const CancelButton = styled(Button)(() => ({
   padding: '8px 16px',
   borderRadius: '8px',
   backgroundColor: '#9EF300',

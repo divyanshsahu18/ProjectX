@@ -1,0 +1,97 @@
+/* Remove the border for the entire calendar */
+.react-calendar {
+  border: none;
+  box-shadow: none;
+  width: 450px;
+}
+
+/* Optionally, you can also remove borders from specific calendar elements */
+.react-calendar__tile {
+  color: black !important;
+  border: none;
+}
+
+.react-calendar__month-view__days__day {
+  border: none;
+}
+
+/* Custom styles for the day names */
+.react-calendar__month-view__weekdays__weekday abbr {
+  text-transform: uppercase; /* Make text uppercase */
+  letter-spacing: 0.1rem;    /* Add letter spacing */
+  text-decoration: none;
+  font-family: Lexend;
+  font-size: 12px;
+  font-weight: 200;
+  line-height: 12px;
+  letter-spacing: 0.03em;
+  text-align: left;
+  color: black;
+}
+
+/* Style for today's date */
+.react-calendar__tile--now {
+  background: none; /* Change background color */
+  color: none;        /* Change text color */
+  border-radius: none;   /* Make it circular */
+  border: none; /* Add a border */
+}
+
+/* Style for the selected date */
+.react-calendar__tile--active {
+  background: #F6FFE5 !important; /* Change background color */
+  color: black !important;        /* Change text color */
+  border-radius: 50% !important;   /* Make it circular */
+  border: 1px solid #b1f03d !important; /* Add a border */
+}
+
+/* General hover effect for calendar tiles (dates) */
+.react-calendar__tile:hover {
+  background-color: none !important; /* Change background on hover */
+  color: black !important;              /* Change text color on hover */
+  border-radius: 50% !important;         /* Make it circular on hover */
+  cursor: pointer;                      /* Change cursor to pointer */
+  transition: background-color 0.3s ease; /* Smooth transition */
+}  
+
+.react-calendar__navigation__arrow {
+  font-size: 1.5rem; /* Increase font size for bigger arrows */
+  width: 50px; /* Increase the width of the button */
+  height: 50px; /* Increase the height of the button */
+  border-radius: 50%; /* Make it circular */
+  background-color: none; /* Custom background color */
+  padding-bottom: 10px;
+  color: black; /* Custom arrow color */
+  border: none; /* Remove border */
+  cursor: pointer; /* Show pointer cursor on hover */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+
+.react-calendar__navigation {
+  border-bottom: 1px solid #BDBDBD; /* Divider style */
+}
+
+.react-calendar__navigation__label {
+  font-weight: bold;
+}
+
+
+.custom-day-tile {
+  font-family: Lexend;
+  font-size: 18px;
+  font-weight: 300;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+/* Hide scrollbar for the right-side grid */
+.scrollable-content {
+height: 100vh; /* Ensures the content takes the full viewport height */
+overflow-y: scroll; /* Enable vertical scrolling */
+scrollbar-width: none; /* Firefox */
+-ms-overflow-style: none; /* IE 10+ */
+}

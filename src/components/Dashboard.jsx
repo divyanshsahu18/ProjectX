@@ -31,38 +31,54 @@ const WorkoutCard = styled(Card)(() => ({
   justifyContent: "space-between",
 }));
 
-const ButtonContainer = styled(Box)(() => ({
-  display: "flex",
-  justifyContent: "space-between",
-  gap: "16px",
-  width: "292px",
-  height: "40px",
+const ButtonContainer = styled("div")(() => ({
+  display: "flex", // using flexbox for alignment
+  justifyContent: "flex-end", // aligns the buttons to the right
+  gap: "16px", // optional: adds space between buttons
+  width: "100%", // ensures the container takes the full width
 }));
 
 const CancelButton = styled(Button)(() => ({
   width: "140px",
   height: "40px",
-  padding: "8px 16px",
-  borderRadius: "8px 0px 0px 0px",
+  padding: "8px",
+  borderRadius: "8px",
   border: "1px solid #323232",
   background: "#FFFFFF",
   color: "#323232",
+  fontFamily: "Lexend", // setting the font-family
+  fontSize: "14px", // setting the font-size
+  fontWeight: 400, // setting the font-weight
+  lineHeight: "24px", // setting the line-height
+  textAlign: "center", // centering the text
+  display: "flex", // enables flexbox for centering
+  alignItems: "center", // vertically centers the text
+  justifyContent: "center", // horizontally centers the text
   "&:hover": {
     background: "#F5F5F5",
   },
 }));
 
 const FinishButton = styled(Button)(() => ({
-  width: "136px",
+  width: "140px",
   height: "40px",
-  padding: "8px 16px",
-  borderRadius: "8px 0px 0px 0px",
+  padding: "8px",
+  borderRadius: "8px",
   background: "#9EF300",
   color: "#323232",
+  fontFamily: "Lexend", // setting the font-family
+  fontSize: "14px", // setting the font-size
+  fontWeight: 400, // setting the font-weight
+  lineHeight: "24px", // setting the line-height
+  textAlign: "center", // centering the text
+  display: "flex", // enables flexbox for centering
+  alignItems: "center", // vertically centers the text
+  justifyContent: "center", // horizontally centers the text
   "&:hover": {
     background: "#8ED900",
   },
 }));
+
 
 const Dashboard = () => {
   const theme = useTheme();
@@ -72,7 +88,7 @@ const Dashboard = () => {
   const [cancelModalOpen, setCancelModalOpen] = useState(false);
   const [feedbackModalOpen, setFeedbackModalOpen] = useState(false);
   const [selectedWorkout, setSelectedWorkout] = useState(null);
-  const { user } = useAuth();
+  const { user, loading: userLoading } = useAuth();
   const navigate = useNavigate();
 
   const handleCancelClick = (workout) => {
@@ -127,6 +143,10 @@ const Dashboard = () => {
 
     fetchWorkouts();
   }, []);
+
+  if (userLoading) {
+    return <Box>Loading user data...</Box>;
+  }
 
   return (
     <Box>
@@ -211,7 +231,7 @@ const Dashboard = () => {
                       </Box>
                     )}
                   </CardContent>
-                  {workout?.status !== "Finished" || workout?.status !== "Cancelled" (
+                   
                     <Box p={2} pt={0}>
                       {workout?.status === "Scheduled" && (
                         <ButtonContainer>
@@ -229,17 +249,27 @@ const Dashboard = () => {
                       )}
                       {workout?.status !== "Scheduled" && (
                         <Button
-                          variant='outlined'
-                          color='inherit'
-                          fullWidth
-                          sx={{ height: "40px" }}
-                          onClick={() => handleFinishClick(workout)}
-                        >
-                          Leave Feedback
-                        </Button>
+                        variant="outlined"
+                        color="inherit"
+                        sx={{
+                          height: "40px",
+                          fontFamily: "Lexend", // setting font-family
+                          fontSize: "14px", // setting font-size
+                          fontWeight: 400, // setting font-weight
+                          lineHeight: "24px", // setting line-height
+                          textAlign: "center", // centering the text
+                          display: "flex", // enables flexbox for centering
+                          alignItems: "center", // vertically centers the text
+                          justifyContent: "center", // horizontally centers the text
+                        }}
+                        onClick={() => handleFinishClick(workout)}
+                      >
+                        Leave Feedback
+                      </Button>
+                      
                       )}
                     </Box>
-                  )}
+                  
                 </WorkoutCard>
               </Grid>
             ))

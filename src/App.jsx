@@ -11,6 +11,7 @@ import Dashboard from './components/Dashboard';
 import MyAccount from './components/MyAccount';
 import Home from './components/Home';
 import CoachesPage from './components/Coaches';
+import CoachProfile from './components/CoachProfile';
 
 import { useState, useEffect } from 'react';
 
@@ -59,6 +60,7 @@ function App() {
         <Routes>
           <Route path="/signup" element={<SignUpForm />} />
           <Route path="/login" element={<Login />} />
+          <Route path='/coachprofile' element={<CoachProfile />} />
           <Route
             path="/"
             element={
@@ -72,7 +74,8 @@ function App() {
             <Route index element={<Navigate to="/dashboard" replace />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="account" element={<MyAccount />} />
-            <Route path="coaches" element={<CoachesPage />} /> {/* Add Coaches route */}
+            <Route path="coaches" element={<CoachesPage />} /> 
+             <Route path="/coach/:name" element={<CoachProfile />} /> 
           </Route>
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>

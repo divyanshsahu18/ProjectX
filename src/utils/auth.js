@@ -1,11 +1,9 @@
-// src/utils/auth.js
-
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-export const ApiBaseUrl = 'https://tn24noegva.execute-api.eu-west-2.amazonaws.com'
+export const ApiBaseUrl = '  https://ut2xqgyy11.execute-api.eu-west-2.amazonaws.com'
 
 export const useLogout = () => {
   const navigate = useNavigate();
